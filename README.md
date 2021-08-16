@@ -37,4 +37,4 @@
 - create route table
 - public subnet
 - NACL
-- security group
+- security group (port 3000 for app, and 80 for HTTP)
