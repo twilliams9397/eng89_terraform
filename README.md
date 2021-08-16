@@ -1,4 +1,5 @@
 # Terraform
+![terraform](terraform.png)
 - lightweight and quick setup
 - powerful
 - .tf syntax files is similar to json {}
