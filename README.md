@@ -29,3 +29,12 @@
 - `terraform plan` checks syntax of main.tf file and returns any errors
 - `terraform apply` runs the main.tf file
 - `terraform destroy` deletes whatever the main.tf file was running
+
+## Steps for network configuration
+- VPC
+- internet gateway
+- attach ig to vpc
+- create route table
+- public subnet
+- NACL
+- security group
