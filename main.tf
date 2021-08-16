@@ -15,7 +15,7 @@ provider "aws" {
 resource "aws_instance" "app_instance" {
 	ami = "ami-038d7b856fe7557b3"
 	instance_type = "t2.micro"
-	associate_public_ip = true
+	associate_public_ip_address = true
 	tags = {
 		Name = "eng89_tom_terraform"
 	}
