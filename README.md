@@ -31,7 +31,7 @@
 - `terraform apply` runs the main.tf file
 - `terraform destroy` deletes whatever the main.tf file was running
 
-# Steps for network configuration (only public subnet for now)
+# Steps for network configuration
 - this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the different subnets and other parts
 
 ![terraform_aws](terraform_aws.png)
