@@ -30,11 +30,21 @@
 - `terraform apply` runs the main.tf file
 - `terraform destroy` deletes whatever the main.tf file was running
 
-## Steps for network configuration
-- VPC
-- internet gateway
-- attach ig to vpc
+## Steps for network configuration (only public subnet for now)
 - create route table
 - public subnet
 - NACL
 - security group (port 3000 for app, and 80 for HTTP)
+- Create a VPC, for me IP is 10.205.0.0/16
+- Create an Internet Gateway and attach it to the created VPC
+- Create the public subnet, with IP 10.205.1.0/24
+- Create a Public Route Table with route 0.0.0.0/0 for all traffic allowed
+- Create a Network Access Control List for the public subnet
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| HTTP | 80 | everywhere (IPv4 and IPv6) |
+| HTTPS | 443 | everywhere (IPv4 and IPv6) |
+| SSH | 22 | Personal IP |
+| Custom TCP | 1024-65535 | everywhere (IPv4 and IPv6) |
