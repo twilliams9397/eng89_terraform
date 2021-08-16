@@ -21,4 +21,8 @@
 - with each environment change a new version is created - version control can be done if required
 - simple to use as much of the work is done in the background
 ## IAC config management vs orchestration
+- Orchestration means arranging or coordinating multiple systems. It’s also used to mean “running the same tasks on a bunch of servers at once, but not necessarily all of them.”
+- orchestration tools are designed to automate the deployment of servers and other infrastructure.
+- Config Management is part of provisioning, implying it is done once at the beginning to configure a server
+- config managment tools help configure the software and systems on this infrastructure that has already been provisioned
 ## Useful/common commands
