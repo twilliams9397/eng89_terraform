@@ -31,6 +31,9 @@
 - `terraform destroy` deletes whatever the main.tf file was running
 
 ## Steps for network configuration (only public subnet for now)
+- this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the public subnet and instance server
+![terraform_aws](terraform_aws.png)
+
 - Create a VPC, for me IP is 10.205.0.0/16
 - Create an Internet Gateway and attach it to the created VPC
 - Create the public subnet, with IP 10.205.1.0/24
