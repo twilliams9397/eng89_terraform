@@ -1,0 +1,1 @@
+# let's build a script to connect to AWS and download/setup all dependencies
