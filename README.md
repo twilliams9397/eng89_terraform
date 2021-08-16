@@ -30,15 +30,18 @@
 - `terraform apply` runs the main.tf file
 - `terraform destroy` deletes whatever the main.tf file was running
 
-## Steps for network configuration (only public subnet for now)
-- this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the public subnet and instance server
+# Steps for network configuration (only public subnet for now)
+- this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the different subnets and other parts
 
 ![terraform_aws](terraform_aws.png)
 
 - Create a VPC, for me IP is 10.205.0.0/16
 - Create an Internet Gateway and attach it to the created VPC
-- Create the public subnet, with IP 10.205.1.0/24
 - Create a Public Route Table with route 0.0.0.0/0 for all traffic allowed
+
+## Public (App)
+- Create the public subnet, with IP 10.205.1.0/24
+- Associate the public route table to this subnet
 - Create a Network Access Control List for the public subnet with following rules:
 
 **Inbound**
@@ -66,3 +69,63 @@
 | HTTPS | 443 | everywhere (IPv4 and IPv6) |
 | SSH | 22 | Personal IP |
 | Custom TCP | 3000 | everywhere (IPv4 and IPv6) |
+
+## Private (Database)
+- Create the private subnet, with IP 10.205.2.0/24
+- Create a Network Access Control List for the private subnet with the following rules:
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| SSH | 22 | Bastion IP |
+| Custom TCP | 27017 | Databse IP |
+| HTTP | 80 | everywhere (IPv4 and IPv6) |
+| HTTPS | 443 | everywhere (IPv4 and IPv6) |
+| Custom TCP | 1024-65535 | everywhere (IPv4 and IPv6) |
+
+**Outbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| Custom TCP | 1024-65535 | App IP |
+| Custom TCP | 1024-65535 | Bastion IP |
+| HTTP | 80 | everywhere (IPv4 and IPv6) |
+| HTTPS | 443 | everywhere (IPv4 and IPv6) |
+
+- Create a Security Group for the private instance server with the following rules:
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| Custom TCP | 27017 | App SG |
+| SSH | 22 | Bastion SG |
+
+## Bastion (secure access to Database)
+- Create the bastion subnet, with IP 10.205.3.0/24
+- Create a Network Access Control List for the private subnet with the following rules:
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| SSH | 22 | Personal IP |
+| Custom TCP | 1024-65535 | Database IP |
+
+**Outbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| SSH | 22 | Databse IP |
+| Custom TCP | 1924-65535 | Personal IP |
+
+- Create a Security Group for the bastion instance server with the following rules:
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| SSH | 22 | Personal IP |
+
+
+
+
+
+
+
+
