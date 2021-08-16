@@ -31,15 +31,11 @@
 - `terraform destroy` deletes whatever the main.tf file was running
 
 ## Steps for network configuration (only public subnet for now)
-- create route table
-- public subnet
-- NACL
-- security group (port 3000 for app, and 80 for HTTP)
 - Create a VPC, for me IP is 10.205.0.0/16
 - Create an Internet Gateway and attach it to the created VPC
 - Create the public subnet, with IP 10.205.1.0/24
 - Create a Public Route Table with route 0.0.0.0/0 for all traffic allowed
-- Create a Network Access Control List for the public subnet
+- Create a Network Access Control List for the public subnet with following rules:
 
 **Inbound**
 | Rule Type | Port | Access |
@@ -48,3 +44,21 @@
 | HTTPS | 443 | everywhere (IPv4 and IPv6) |
 | SSH | 22 | Personal IP |
 | Custom TCP | 1024-65535 | everywhere (IPv4 and IPv6) |
+
+**Outbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| HTTP | 80 | everywhere (IPv4 and IPv6) |
+| HTTPS | 443 | everywhere (IPv4 and IPv6) |
+| Custom TCP | 27017 | Database Private IP |
+| Custom TCP | 1024-65535 | everywhere (IPv4 and IPv6) |
+
+- Create a Security Group for the public instance server with the following rules:
+
+**Inbound**
+| Rule Type | Port | Access |
+| :---: | :---: | :---: |
+| HTTP | 80 | everywhere (IPv4 and IPv6) |
+| HTTPS | 443 | everywhere (IPv4 and IPv6) |
+| SSH | 22 | Personal IP |
+| Custom TCP | 3000 | everywhere (IPv4 and IPv6) |
