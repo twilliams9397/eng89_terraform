@@ -16,5 +16,9 @@
 
 ## Terraform benefits
 ## Competitors/why terraform
+- open source, has many plugin options
+- works with any cloud service provider
+- with each environment change a new version is created - version control can be done if required
+- simple to use as much of the work is done in the background
 ## IAC config management vs orchestration
 ## Useful/common commands
