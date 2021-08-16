@@ -26,3 +26,6 @@
 - Config Management is part of provisioning, implying it is done once at the beginning to configure a server
 - config managment tools help configure the software and systems on this infrastructure that has already been provisioned
 ## Useful/common commands
+- `terraform plan` checks syntax of main.tf file and returns any errors
+- `terraform apply` runs the main.tf file
+- `terraform destroy` deletes whatever the main.tf file was running
