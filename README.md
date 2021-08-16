@@ -11,6 +11,7 @@
 - when outcome is all green, run `terraform apply` to run the script
 - `terraform destroy` will destroy instances matching the main.tf details
 - create pem key pair in AWS and add to .ssh folder to allow SSH access, by adding key into `main.tf`
+- can now SSH in from .ssh folder (or location of .pem key)
 
 ## Terraform benefits
 ## Competitors/why terraform
