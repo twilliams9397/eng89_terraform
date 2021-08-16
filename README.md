@@ -14,8 +14,8 @@
 - create pem key pair in AWS and add to .ssh folder to allow SSH access, by adding key into `main.tf`
 - can now SSH in from .ssh folder (or location of .pem key)
 
-## Terraform benefits
 ## Competitors/why terraform
+- kubernetes, ansible, packer
 - open source, has many plugin options
 - works with any cloud service provider
 - with each environment change a new version is created - version control can be done if required
