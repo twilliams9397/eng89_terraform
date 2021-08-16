@@ -32,6 +32,7 @@
 
 ## Steps for network configuration (only public subnet for now)
 - this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the public subnet and instance server
+
 ![terraform_aws](terraform_aws.png)
 
 - Create a VPC, for me IP is 10.205.0.0/16
