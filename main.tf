@@ -13,7 +13,8 @@ provider "aws" {
 # aws_ec2_instance, name, ami, type of instance, with/without ip - tags is keyword to name it
 
 resource "aws_instance" "app_instance" {
-	key_name = "eng89_tom_terraform"
+	key_name = var.aws_key_name # uses variable.tf
+	aws_key_path = var.aws_key_path
 	ami = "ami-038d7b856fe7557b3"
 	instance_type = "t2.micro"
 	associate_public_ip_address = true
@@ -23,8 +24,3 @@ resource "aws_instance" "app_instance" {
 	}
 
 }
-
-# resource "aws_key_pair" "ssh_key" {
-# 	key_name = "eng89_tom_terraform"
-# 	public_key = file("/Users/Tom1/Documents/Sparta/Terraform/eng89_tom_terraform")
-# }
