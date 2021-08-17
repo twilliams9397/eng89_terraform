@@ -14,8 +14,7 @@ provider "aws" {
 
 resource "aws_instance" "app_instance" {
 	key_name = var.aws_key_name # uses variable.tf
-	#aws_key_path = var.aws_key_path
-	ami = "ami-038d7b856fe7557b3"
+	ami = var.ami_id
 	instance_type = "t2.micro"
 	associate_public_ip_address = true
 
@@ -23,4 +22,13 @@ resource "aws_instance" "app_instance" {
 		Name = "eng89_tom_terraform"
 	}
 
+}
+
+resource "aws_vpc" "terraform_vpc" {
+	cidr_block = var.cidr_block
+	instance_tenancy = "default"
+
+	tags = {
+		Name = var.vpc_name
+	}
 }
