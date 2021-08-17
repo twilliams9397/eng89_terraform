@@ -102,6 +102,7 @@ resource "aws_security_group" "app_sg" {
 
 resource "aws_network_acl" "public_nacl" {
   vpc_id = aws_vpc.terraform_vpc.id
+  #subnet_ids = [aws_subnet.terraform_public_sub.id]
 
   egress {
       protocol   = "tcp"
@@ -174,7 +175,10 @@ resource "aws_instance" "app_instance" {
   vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
 	instance_type = "t2.micro"
 	associate_public_ip_address = true
-	user_data = "/app" # contains app stuff and provision file
+	provisioner "file" {
+    source      = "/Users/Tom1/Documents/Sparta/Terraform/app"
+    destination = "/home/ubuntu"
+  }
 
 	tags = {
 		Name = var.ec2_name
