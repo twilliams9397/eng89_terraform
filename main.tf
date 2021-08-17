@@ -29,6 +29,66 @@ resource "aws_internet_gateway" "terraform_igw" {
 	}
 }
 
+resource "aws_route_table" "terraform_rt" {
+    vpc_id = aws_vpc.terraform_vpc.id
+    
+    route {
+        //associated subnet can reach everywhere
+        cidr_block = "0.0.0.0/0" 
+        //CRT uses this IGW to reach internet
+        gateway_id = aws_internet_gateway.terraform_igw.id
+    }
+    
+    tags = {
+        Name = var.rt_name
+    }
+}
+
+resource "aws_subnet" "terraform_public_sub" {
+    vpc_id = aws_vpc.terraform_vpc.id
+    cidr_block = var.public_cidr
+    map_public_ip_on_launch = "true" //it makes this a public subnet
+    availability_zone = "eu-west-1a"
+    tags = {
+        Name = var.public_sub_name
+    }
+}
+
+resource "aws_route_table_association" "terraform_rt_assoc" {
+    subnet_id = aws_subnet.terraform_public_sub.id
+    route_table_id = aws_route_table.terraform_rt.id
+}
+
+resource "aws_security_group" "app_sg" {
+    vpc_id = aws_vpc.terraform_vpc.id
+    
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        // This means, all ip address are allowed to ssh ! 
+        // Do not do it in the production. 
+        // Put your office or home address in it!
+        cidr_blocks = [var.my_ip]
+    }
+    //If you do not add this rule, you can not reach the NGIX  
+    ingress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    tags = {
+        Name = "eng89_salem_sg_app"
+    }
+}
+
 # resource "aws_instance" "app_instance" {
 # 	key_name = var.aws_key_name # uses variable.tf
 # 	ami = var.ami_id
