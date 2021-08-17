@@ -181,8 +181,22 @@ resource "aws_instance" "app_instance" {
 
     connection {
       type        = "ssh"
-      user        = "root"
-      private_key = var.aws_private_key
+      user        = "ubuntu"
+      private_key = file(var.aws_key_path)
+      host        = self.public_ip
+    }
+  }
+  provisioner "remote-exec" {
+  	inline = [
+  					"cd app",
+  					"sh provision.sh",
+            "npm install",
+  					"node app.js"
+  					]
+  	connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.aws_key_path)
       host        = self.public_ip
     }
   }

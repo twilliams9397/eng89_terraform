@@ -14,6 +14,7 @@ sudo apt-get install git -y
 sudo apt-get install python-software-properties -y
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install nodejs -y
+sudo apt-get update -y
 
 # install pm2
 sudo npm install pm2 -g
@@ -21,7 +22,9 @@ sudo npm install pm2 -g
 sudo apt-get install nginx -y
 
 # remove the old file and add our one
-sudo rm home/ubuntu/etc/nginx/sites-available/default
+# sudo rm ~/etc/nginx/sites-available/default
+cd /etc
+sudo rm -rf default
 sudo echo "server{
         listen 80;
         server_name _;
@@ -33,7 +36,7 @@ sudo echo "server{
           proxy_set_header Host $host;
           proxy_cache_bypass $http_upgrade;
         }
-}" >> home/ubuntu/etc/nginx/sites-available/default
+}" >> default
 
 # finally, restart the nginx service so the new config takes hold
 sudo service nginx restart
