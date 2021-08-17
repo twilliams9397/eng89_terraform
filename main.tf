@@ -47,9 +47,24 @@ resource "aws_instance" "app_instance" {
   provisioner "remote-exec" {
   	inline = [
   					"sudo apt-get update",
+  					"cd ~/etc/nginx/sites-available",
+						"sudo rm -rf default",
+						"sudo echo server{\n  >> default",
+        		"sudo echo   listen 80;\n >> default",
+            "sudo echo   server_name _;\n >> default",
+        		"sudo echo   location / {\n >> default",
+            "sudo echo     proxy_pass http:${self.public_ip}:3000;\n >> default",
+            "sudo echo     proxy_http_version 1.1;\n >> default",
+            "sudo echo     proxy_set_header Upgrade $http_upgrade;\n >> default",
+            "sudo echo     proxy_set_header Connection 'upgrade'; >> default",
+            "sudo echo     proxy_set_header Host $host; >> default",
+            "sudo echo     proxy_cache_bypass $http_upgrade; >> default",
+            "sudo echo  } >> default",
+            "sudo echo } >> default",
   					"cd app",
   					"sh provision.sh",
   					"npm install",
+  					"export DB_HOST=mongodb://10.205.2.0:27017",
             "node seeds/seed.js",
   					"node app.js"
   					]
