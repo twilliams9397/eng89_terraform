@@ -19,3 +19,7 @@ variable "ami_id" {
 variable "vpc_name" {
   default = "eng89_tom_terra_vpc"
 }
+
+variable "igw_name" {
+  default = "eng89_tom_terra_igw"
+}
