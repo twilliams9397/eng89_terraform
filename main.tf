@@ -65,36 +65,36 @@ resource "aws_security_group" "app_sg" {
 
 # outbound rules
     egress {
-        from_port = 0
-        to_port = 0
-        protocol = -1 # allow all
+        from_port   = 0
+        to_port     = 0
+        protocol    = -1 # allow all
         cidr_blocks = ["0.0.0.0/0"]
     }
 
 # inbound rules
     ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
         cidr_blocks = [var.my_ip]
     }
     //If you do not add this rule, you can not reach the NGIX  
     ingress {
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
-    		from_port = 443
-    		to_port = 443
-    		protocol = "tcp"
+    		from_port   = 443
+    		to_port     = 443
+    		protocol    = "tcp"
     		cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
-    		from_port = 3000
-    		to_port = 3000
-    		protocol = "tcp"
+    		from_port   = 3000
+    		to_port     = 3000
+    		protocol    = "tcp"
     		cidr_blocks = ["0.0.0.0/0"]
     }
 }
@@ -112,7 +112,75 @@ resource "aws_instance" "app_instance" {
 	}
 }
 
+resource "aws_network_acl" "public_nacl" {
+  vpc_id = aws_vpc.terraform_vpc.id
 
+  egress = [
+    {
+      protocol   = "tcp"
+      rule_no    = 110
+      action     = "allow"
+      cidr_block = "0.0.0.0/0"
+      from_port  = 80
+      to_port    = 80
+    }
+    {
+    	protocol   = "tcp"
+    	rule_no    = 120
+    	action     = "allow"
+    	cidr_block = "0.0.0.0/0"
+    	from_port  = 443
+    	to_port    = 443
+    }
+    {
+    	protocol   = "tcp"
+    	rule_no    = 120
+    	action     = "allow"
+    	cidr_block = "0.0.0.0/0"
+    	from_port  = 1024-65535
+    	to_port    = 1024-65535
+    }
+  ]
+
+  ingress = [
+    {
+      protocol   = "tcp"
+      rule_no    = 100
+      action     = "allow"
+      cidr_block = "0.0.0.0/0"
+      from_port  = 80
+      to_port    = 80
+    }
+    {
+      protocol   = "tcp"
+      rule_no    = 110
+      action     = "allow"
+      cidr_block = "0.0.0.0/0"
+      from_port  = 443
+      to_port    = 443
+    }
+    {
+      protocol   = "tcp"
+      rule_no    = 120
+      action     = "allow"
+      cidr_block = var.my_ip
+      from_port  = 22
+      to_port    = 22
+    }
+    {
+    	protocol   = "tcp"
+    	rule_no    = 130
+    	action     = "allow"
+    	cidr_block = "0.0.0.0/0"
+    	from_port  = 1024-65535
+    	to_port    = 1024-65535
+    }
+  ]
+
+  tags = {
+    Name = var.public_acl_name
+  }
+}
 
 
 
