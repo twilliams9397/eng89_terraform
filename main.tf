@@ -99,24 +99,11 @@ resource "aws_security_group" "app_sg" {
     }
 }
 
-resource "aws_instance" "app_instance" {
-	key_name = var.aws_key_name # uses variable.tf
-	ami = var.ami_id
-  subnet_id = aws_subnet.terraform_public_sub.id
-  vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
-	instance_type = "t2.micro"
-	associate_public_ip_address = true
-
-	tags = {
-		Name = var.ec2_name
-	}
-}
 
 resource "aws_network_acl" "public_nacl" {
   vpc_id = aws_vpc.terraform_vpc.id
 
-  egress = [
-    {
+  egress {
       protocol   = "tcp"
       rule_no    = 110
       action     = "allow"
@@ -124,7 +111,7 @@ resource "aws_network_acl" "public_nacl" {
       from_port  = 80
       to_port    = 80
     }
-    {
+  egress {
     	protocol   = "tcp"
     	rule_no    = 120
     	action     = "allow"
@@ -132,18 +119,16 @@ resource "aws_network_acl" "public_nacl" {
     	from_port  = 443
     	to_port    = 443
     }
-    {
-    	protocol   = "tcp"
-    	rule_no    = 120
-    	action     = "allow"
-    	cidr_block = "0.0.0.0/0"
-    	from_port  = 1024-65535
-    	to_port    = 1024-65535
-    }
-  ]
-
-  ingress = [
-    {
+  # egress {
+  #   	protocol   = "tcp"
+  #   	rule_no    = 120
+  #   	action     = "allow"
+  #   	cidr_block = "0.0.0.0/0"
+  #   	from_port_range  = 1024-65535
+  #   	to_port_range    = 1024-65535
+  #   }
+  
+  ingress {
       protocol   = "tcp"
       rule_no    = 100
       action     = "allow"
@@ -151,7 +136,7 @@ resource "aws_network_acl" "public_nacl" {
       from_port  = 80
       to_port    = 80
     }
-    {
+  ingress {
       protocol   = "tcp"
       rule_no    = 110
       action     = "allow"
@@ -159,7 +144,7 @@ resource "aws_network_acl" "public_nacl" {
       from_port  = 443
       to_port    = 443
     }
-    {
+  ingress {
       protocol   = "tcp"
       rule_no    = 120
       action     = "allow"
@@ -167,22 +152,34 @@ resource "aws_network_acl" "public_nacl" {
       from_port  = 22
       to_port    = 22
     }
-    {
-    	protocol   = "tcp"
-    	rule_no    = 130
-    	action     = "allow"
-    	cidr_block = "0.0.0.0/0"
-    	from_port  = 1024-65535
-    	to_port    = 1024-65535
-    }
-  ]
-
+  # ingress {
+  #   	protocol   = "tcp"
+  #   	rule_no    = 130
+  #   	action     = "allow"
+  #   	cidr_block = "0.0.0.0/0"
+  #   	from_port  = 1024-65535
+  #   	to_port    = 1024-65535
+  #   }
+  
   tags = {
     Name = var.public_acl_name
   }
 }
 
 
+resource "aws_instance" "app_instance" {
+	key_name = var.aws_key_name # uses variable.tf
+	ami = var.ami_id
+  subnet_id = aws_subnet.terraform_public_sub.id
+  vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
+	instance_type = "t2.micro"
+	associate_public_ip_address = true
+	user_data = "/app"
+
+	tags = {
+		Name = var.ec2_name
+	}
+}
 
 
 
