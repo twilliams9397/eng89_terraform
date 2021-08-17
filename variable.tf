@@ -23,3 +23,7 @@ variable "vpc_name" {
 variable "igw_name" {
   default = "eng89_tom_terra_igw"
 }
+
+variable "vpc_id" {
+  default = "vpc-0d949f5bb63b7524f"
+}

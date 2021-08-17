@@ -12,18 +12,6 @@ provider "aws" {
 # keyword: resource -> provide resource name and give specific details to service
 # aws_ec2_instance, name, ami, type of instance, with/without ip - tags is keyword to name it
 
-resource "aws_instance" "app_instance" {
-	key_name = var.aws_key_name # uses variable.tf
-	ami = var.ami_id
-	instance_type = "t2.micro"
-	associate_public_ip_address = true
-
-	tags = {
-		Name = "eng89_tom_terraform"
-	}
-
-}
-
 resource "aws_vpc" "terraform_vpc" {
 	cidr_block = var.cidr_block
 	instance_tenancy = "default"
@@ -32,3 +20,22 @@ resource "aws_vpc" "terraform_vpc" {
 		Name = var.vpc_name
 	}
 }
+
+resource "aws_internet_gateway" "terraform_igw" {
+	vpc_id = aws_vpc.terraform_vpc.id
+
+	tags = {
+		Name = var.igw_name
+	}
+}
+
+# resource "aws_instance" "app_instance" {
+# 	key_name = var.aws_key_name # uses variable.tf
+# 	ami = var.ami_id
+# 	instance_type = "t2.micro"
+# 	associate_public_ip_address = true
+
+# 	tags = {
+# 		Name = "eng89_tom_terraform"
+# 	}
+# }
