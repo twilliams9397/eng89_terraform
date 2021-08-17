@@ -7,6 +7,7 @@ provider "aws" {
 	region = "eu-west-1"
 }
 
+# App instance
 resource "aws_instance" "app_instance" {
 	key_name = var.aws_key_name 
 	ami = var.ami_id
@@ -47,5 +48,19 @@ resource "aws_instance" "app_instance" {
 
 	tags = {
 		Name = var.ec2_name
+	}
+}
+
+# Database instance
+resource "aws_instance" "db_instance" {
+	key_name = var.aws_key_name 
+	ami = var.ami_id
+  subnet_id = aws_subnet.terraform_private_sub.id
+  vpc_security_group_ids = ["${aws_security_group.db_sg.id}"]
+	instance_type = "t2.micro"
+	associate_public_ip_address = false
+
+	tags = {
+		Name = var.ec2_db_name
 	}
 }
