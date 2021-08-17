@@ -181,9 +181,9 @@ resource "aws_instance" "app_instance" {
 
     connection {
       type        = "ssh"
-      user        = "ubuntu"
-      private_key = var.aws_key_name
-      host        = aws_instance.app_instance.public_dns
+      user        = "root"
+      private_key = var.aws_private_key
+      host        = self.public_ip
     }
   }
 
