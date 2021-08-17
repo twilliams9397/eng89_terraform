@@ -7,3 +7,11 @@ variable "aws_key_name" {
 variable "aws_key_path" {
   default = "~/.ssh/eng89_tom_terraform.pem"
 }
+
+variable "cidr_block" {
+  default = "10.205.0.0/16"
+}
+
+variable "ami_id" {
+  default = "ami-038d7b856fe7557b3"
+}
