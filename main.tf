@@ -2,6 +2,7 @@
 # keyword: provider -> aws 
 
 provider "aws" {
+	# setting aws region
 	region = "eu-west-1"
 }
 
@@ -13,6 +14,7 @@ provider "aws" {
 # aws_ec2_instance, name, ami, type of instance, with/without ip - tags is keyword to name it
 
 resource "aws_vpc" "terraform_vpc" {
+	# creating vpc with chosen cidr
 	cidr_block = var.cidr_block
 	instance_tenancy = "default"
 
@@ -22,7 +24,8 @@ resource "aws_vpc" "terraform_vpc" {
 }
 
 resource "aws_internet_gateway" "terraform_igw" {
-	vpc_id = aws_vpc.terraform_vpc.id # takes id fomr created vpc above
+	vpc_id = aws_vpc.terraform_vpc.id 
+	# takes id from created vpc above and links gateway to vpc
 
 	tags = {
 		Name = var.igw_name
@@ -30,12 +33,12 @@ resource "aws_internet_gateway" "terraform_igw" {
 }
 
 resource "aws_route_table" "terraform_rt" {
+		# links route table to vpc
     vpc_id = aws_vpc.terraform_vpc.id
     
     route {
-        //associated subnet can reach everywhere
+        # associated subnet can reach everywhere
         cidr_block = "0.0.0.0/0" 
-        //CRT uses this IGW to reach internet
         gateway_id = aws_internet_gateway.terraform_igw.id
     }
     
@@ -46,8 +49,11 @@ resource "aws_route_table" "terraform_rt" {
 
 resource "aws_subnet" "terraform_public_sub" {
     vpc_id = aws_vpc.terraform_vpc.id
+    # uses chosen cidr for public subnet
     cidr_block = var.public_cidr
-    map_public_ip_on_launch = "true" //it makes this a public subnet
+    # gives subnet public ip
+    map_public_ip_on_launch = "true"
+    # chooses aws availability zone
     availability_zone = "eu-west-1a"
     tags = {
         Name = var.public_sub_name
@@ -55,11 +61,13 @@ resource "aws_subnet" "terraform_public_sub" {
 }
 
 resource "aws_route_table_association" "terraform_rt_assoc" {
+	  # links the route table to the subnet
     subnet_id = aws_subnet.terraform_public_sub.id
     route_table_id = aws_route_table.terraform_rt.id
 }
 
 resource "aws_security_group" "app_sg" {
+		# creates sg for vpc
     vpc_id = aws_vpc.terraform_vpc.id
     name = var.app_sg_name
 
@@ -72,13 +80,14 @@ resource "aws_security_group" "app_sg" {
     }
 
 # inbound rules
+		# SSH rules
     ingress {
         from_port   = 22
         to_port     = 22
         protocol    = "tcp"
         cidr_blocks = [var.my_ip]
     }
-    //If you do not add this rule, you can not reach the NGIX  
+    # If you do not add this rule, you can not reach the NGIX  
     ingress {
         from_port   = 80
         to_port     = 80
@@ -91,6 +100,7 @@ resource "aws_security_group" "app_sg" {
     		protocol    = "tcp"
     		cidr_blocks = ["0.0.0.0/0"]
     }
+    # needed for reverse proxy
     ingress {
     		from_port   = 3000
     		to_port     = 3000
@@ -102,6 +112,7 @@ resource "aws_security_group" "app_sg" {
 
 resource "aws_network_acl" "public_nacl" {
   vpc_id = aws_vpc.terraform_vpc.id
+  # links subnet to acl
   #subnet_ids = [aws_subnet.terraform_public_sub.id]
 
   egress {
@@ -169,12 +180,15 @@ resource "aws_network_acl" "public_nacl" {
 
 
 resource "aws_instance" "app_instance" {
-	key_name = var.aws_key_name # uses variable.tf
+	key_name = var.aws_key_name 
 	ami = var.ami_id
+	# creates instance in public subnet
   subnet_id = aws_subnet.terraform_public_sub.id
+  # links security group to instance
   vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
 	instance_type = "t2.micro"
 	associate_public_ip_address = true
+	# uploads local folder to instance
 	provisioner "file" {
     source      = "/Users/Tom1/Documents/Sparta/Terraform/app"
     destination = "/home/ubuntu"
@@ -186,6 +200,7 @@ resource "aws_instance" "app_instance" {
       host        = self.public_ip
     }
   }
+  # runs commands in instance
   provisioner "remote-exec" {
   	inline = [
   					"cd app",
