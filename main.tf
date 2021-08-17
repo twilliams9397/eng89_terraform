@@ -22,7 +22,7 @@ resource "aws_vpc" "terraform_vpc" {
 }
 
 resource "aws_internet_gateway" "terraform_igw" {
-	vpc_id = aws_vpc.terraform_vpc.id
+	vpc_id = aws_vpc.terraform_vpc.id # takes id fomr created vpc above
 
 	tags = {
 		Name = var.igw_name
@@ -36,6 +36,6 @@ resource "aws_internet_gateway" "terraform_igw" {
 # 	associate_public_ip_address = true
 
 # 	tags = {
-# 		Name = "eng89_tom_terraform"
+# 		Name = var.ec2_name
 # 	}
 # }
