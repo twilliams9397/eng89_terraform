@@ -150,7 +150,7 @@ resource "aws_network_acl" "public_nacl" {
 
 # PRIVATE FOR DATABASE SERVER
 
-resource "aws_security_group" "private_db" {
+resource "aws_security_group" "db_sg" {
   vpc_id = aws_vpc.terraform_vpc.id
   name = var.db_sg_name
 
