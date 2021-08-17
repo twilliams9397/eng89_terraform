@@ -61,20 +61,21 @@ resource "aws_route_table_association" "terraform_rt_assoc" {
 
 resource "aws_security_group" "app_sg" {
     vpc_id = aws_vpc.terraform_vpc.id
-    
+    name = var.app_sg_name
+
+# outbound rules
     egress {
         from_port = 0
         to_port = 0
-        protocol = -1
+        protocol = -1 # allow all
         cidr_blocks = ["0.0.0.0/0"]
     }
+
+# inbound rules
     ingress {
         from_port = 22
         to_port = 22
         protocol = "tcp"
-        // This means, all ip address are allowed to ssh ! 
-        // Do not do it in the production. 
-        // Put your office or home address in it!
         cidr_blocks = [var.my_ip]
     }
     //If you do not add this rule, you can not reach the NGIX  
@@ -84,8 +85,17 @@ resource "aws_security_group" "app_sg" {
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
-    tags = {
-        Name = var.app_sg_name
+    ingress {
+    		from_port = 443
+    		to_port = 443
+    		protocol = "tcp"
+    		cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+    		from_port = 3000
+    		to_port = 3000
+    		protocol = "tcp"
+    		cidr_blocks = ["0.0.0.0/0"]
     }
 }
 
