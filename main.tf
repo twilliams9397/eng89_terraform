@@ -46,6 +46,7 @@ resource "aws_instance" "app_instance" {
   # runs commands in instance
   provisioner "remote-exec" {
   	inline = [
+  					"sudo apt-get update",
   					"cd app",
   					"sh provision.sh",
             "npm install",
