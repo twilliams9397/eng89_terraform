@@ -10,6 +10,8 @@ resource "aws_vpc" "terraform_vpc" {
   }
 }
 
+# PUBLIC FOR APP SERVER
+
 resource "aws_subnet" "terraform_public_sub" {
     vpc_id = aws_vpc.terraform_vpc.id
     # uses chosen cidr for public subnet
@@ -22,6 +24,8 @@ resource "aws_subnet" "terraform_public_sub" {
         Name = var.public_sub_name
     }
 }
+
+# PRIVATE FOR DATABASE SERVER
 
 resource "aws_subnet" "terraform_private_sub" {
   vpc_id = aws_vpc.terraform_vpc.id

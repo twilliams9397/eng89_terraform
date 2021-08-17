@@ -34,6 +34,7 @@ resource "aws_instance" "app_instance" {
   					"cd app",
   					"sh provision.sh",
             "npm install",
+            "node seeds/seed.js",
   					"node app.js"
   					]
   	connection {
