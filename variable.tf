@@ -15,3 +15,7 @@ variable "cidr_block" {
 variable "ami_id" {
   default = "ami-038d7b856fe7557b3"
 }
+
+variable "vpc_name" {
+  default = "eng89_tom_terra_vpc"
+}
