@@ -178,6 +178,13 @@ resource "aws_instance" "app_instance" {
 	provisioner "file" {
     source      = "/Users/Tom1/Documents/Sparta/Terraform/app"
     destination = "/home/ubuntu"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = var.aws_key_name
+      host        = "${self.public_dns}"
+    }
   }
 
 	tags = {
