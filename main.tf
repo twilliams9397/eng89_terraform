@@ -85,7 +85,7 @@ resource "aws_security_group" "app_sg" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "eng89_salem_sg_app"
+        Name = var.app_sg_name
     }
 }
 
