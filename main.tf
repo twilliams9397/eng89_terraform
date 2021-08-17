@@ -174,7 +174,7 @@ resource "aws_instance" "app_instance" {
   vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
 	instance_type = "t2.micro"
 	associate_public_ip_address = true
-	user_data = "/app"
+	user_data = "/app" # contains app stuff and provision file
 
 	tags = {
 		Name = var.ec2_name
