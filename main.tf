@@ -48,8 +48,7 @@ resource "aws_instance" "app_instance" {
   	inline = [
   					"sudo apt-get update",
   					"cd app",
-  					"chmod 700 provision.sh",
-  					"printf '\n' | ./provision.sh",
+  					"sh provision.sh",
             "node seeds/seed.js",
   					"node app.js"
   					]
