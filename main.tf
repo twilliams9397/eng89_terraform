@@ -1,26 +1,10 @@
 # let's build a script to connect to AWS and download/setup all dependencies
 # keyword: provider -> aws 
+# this main file will take from all other .tf files to create the instances
 
 provider "aws" {
 	# setting aws region
 	region = "eu-west-1"
-}
-
-# then we will run terraform init (to initialise) in terminal/gitbash
-# then we will move on to launch aws services
-
-# lets launch an ec2 instance in eu-west-1 with ami-038d7b856fe7557b3 - ubuntu 16.04
-# keyword: resource -> provide resource name and give specific details to service
-# aws_ec2_instance, name, ami, type of instance, with/without ip - tags is keyword to name it
-
-resource "aws_vpc" "terraform_vpc" {
-	# creating vpc with chosen cidr
-	cidr_block = var.cidr_block
-	instance_tenancy = "default"
-
-	tags = {
-		Name = var.vpc_name
-	}
 }
 
 resource "aws_internet_gateway" "terraform_igw" {
@@ -47,18 +31,7 @@ resource "aws_route_table" "terraform_rt" {
     }
 }
 
-resource "aws_subnet" "terraform_public_sub" {
-    vpc_id = aws_vpc.terraform_vpc.id
-    # uses chosen cidr for public subnet
-    cidr_block = var.public_cidr
-    # gives subnet public ip
-    map_public_ip_on_launch = "true"
-    # chooses aws availability zone
-    availability_zone = "eu-west-1a"
-    tags = {
-        Name = var.public_sub_name
-    }
-}
+
 
 resource "aws_route_table_association" "terraform_rt_assoc" {
 	  # links the route table to the subnet
