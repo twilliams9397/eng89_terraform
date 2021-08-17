@@ -27,3 +27,7 @@ variable "igw_name" {
 variable "vpc_id" {
   default = "vpc-0d949f5bb63b7524f"
 }
+
+variable "ec2_name" {
+  default = "eng89_tom_terraform"
+}
