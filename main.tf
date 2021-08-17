@@ -183,7 +183,7 @@ resource "aws_instance" "app_instance" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = var.aws_key_name
-      host        = "${self.public_dns}"
+      host        = aws_instance.app_instance.public_dns
     }
   }
 
