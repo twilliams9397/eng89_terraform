@@ -44,22 +44,22 @@ resource "aws_instance" "app_instance" {
     }
   }
   # runs commands in instance
-  # provisioner "remote-exec" {
-  # 	inline = [
-  # 					"sudo apt-get update",
-  # 					"cd app",
-  # 					"sh provision.sh",
-  # 					"printf '\n' | npm install",
-  #           "node seeds/seed.js",
-  # 					"node app.js"
-  # 					]
-  # 	connection {
-  #     type        = "ssh"
-  #     user        = "ubuntu"
-  #     private_key = file(var.aws_key_path)
-  #     host        = self.public_ip
-  #   }
-  # }
+  provisioner "remote-exec" {
+  	inline = [
+  					"sudo apt-get update",
+  					"cd app",
+  					"sh provision.sh",
+  					"npm install",
+            "node seeds/seed.js",
+  					"node app.js"
+  					]
+  	connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.aws_key_path)
+      host        = self.public_ip
+    }
+  }
 
 	tags = {
 		Name = var.ec2_name
