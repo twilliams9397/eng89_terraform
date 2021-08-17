@@ -89,13 +89,25 @@ resource "aws_security_group" "app_sg" {
     }
 }
 
-# resource "aws_instance" "app_instance" {
-# 	key_name = var.aws_key_name # uses variable.tf
-# 	ami = var.ami_id
-# 	instance_type = "t2.micro"
-# 	associate_public_ip_address = true
+resource "aws_instance" "app_instance" {
+	key_name = var.aws_key_name # uses variable.tf
+	ami = var.ami_id
+  subnet_id = aws_subnet.terraform_public_sub.id
+  vpc_security_group_ids = ["${aws_security_group.app_sg.id}"]
+	instance_type = "t2.micro"
+	associate_public_ip_address = true
 
-# 	tags = {
-# 		Name = var.ec2_name
-# 	}
-# }
+	tags = {
+		Name = var.ec2_name
+	}
+}
+
+
+
+
+
+
+
+
+
+
