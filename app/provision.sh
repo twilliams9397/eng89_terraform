@@ -4,7 +4,7 @@
 sudo apt-get update -y
 
 # upgrade any packages available
-sudo apt-get upgrade -y
+# sudo apt-get upgrade -y
 
 
 # install git
@@ -13,7 +13,7 @@ sudo apt-get install git -y
 # install nodejs
 sudo apt-get install python-software-properties -y
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-printf '\n' | sudo apt-get install nodejs 
+sudo apt-get install nodejs # the printf is in place of user input
 sudo apt-get update -y
 
 # install pm2
