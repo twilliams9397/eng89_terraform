@@ -46,13 +46,21 @@ resource "aws_instance" "app_instance" {
   # runs commands in instance
   provisioner "remote-exec" {
   	inline = [
-  					"sudo apt-get update",
-  					"cd app",
-  					"sh provision.sh",
-  					"npm install",
-  					"export DB_HOST=mongodb://10.205.2.0:27017",
-            "node seeds/seed.js",
-  					"node app.js"
+  					# "sudo apt-get update",
+  					# "cd app",
+       #      "sed -i 's/replacewithip/${self.public_ip}/g' default",
+  					# "sh provision.sh",
+  					# "npm install",
+  					# "export DB_HOST=mongodb://10.205.2.0:27017",
+       #      "node seeds/seed.js",
+  					# "node app.js"
+            "sudo apt-get update -y",
+            "cd app",
+      "sudo apt-get install -y dos2unix",
+      "sed -i 's/replacewithip/${self.public_ip}/g' default", #replace text in file
+      "dos2unix provision.sh",
+      "chmod +x provision.sh",
+      "sh provision.sh"
   					]
   	connection {
       type        = "ssh"
