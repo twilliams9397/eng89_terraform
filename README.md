@@ -33,6 +33,7 @@
 
 # Steps for network configuration
 - this diagram illustrates how an aws infrastructure can be setup and the steps below detail how to configure the different subnets and other parts
+- `terraform.tfstate` file will contain all the configuration details of the setup instances and VPCs etc
 
 ![terraform_aws](terraform_aws.png)
 
