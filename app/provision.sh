@@ -1,4 +1,4 @@
-# #!/bin/bash
+#!/bin/bash
 
 # # Update the sources list
 # sudo apt-get update -y
@@ -30,7 +30,6 @@
 # sudo systemctl enable nginx
 
 
-!/bin/bash
 
 #update packages
 sudo apt-get update -y
