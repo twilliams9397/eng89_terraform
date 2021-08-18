@@ -34,7 +34,6 @@
 
 #update packages
 sudo apt-get update -y
-sudo apt-get upgrade -y
 
 #install a bunch of new software
 sudo apt-get install nginx -y

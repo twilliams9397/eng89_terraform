@@ -16,6 +16,31 @@ resource "aws_instance" "db_instance" {
 	instance_type = "t2.micro"
 	associate_public_ip_address = false
 
+  provisioner "file" {
+    source      = "/Users/Tom1/Documents/Sparta/Terraform/db_provision.sh/"
+    destination = "/home/ubuntu"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.aws_key_path)
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+              "sudo apt-get update -y",
+              "sh provision.sh"]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.aws_key_path)
+      host        = self.public_ip
+    }
+  }
+
 	tags = {
 		Name = var.ec2_db_name
 	}
