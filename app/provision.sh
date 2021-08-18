@@ -21,7 +21,7 @@ sudo npm install pm2 -g
 
 sudo apt-get install nginx -y
 
-remove the old file and add our one
+# remove the old file and add our one
 sudo rm ~/etc/nginx/sites-available/default
 sudo rm -rf default
 sudo echo "server{
