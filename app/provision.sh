@@ -46,8 +46,8 @@ sudo apt-get install python-software-properties -y
 sudo npm install pm2 -g -y
 
 #set up reverse proxy
-rm -rf /etc/nginx/sites-available/default
-cp ~/default /etc/nginx/sites-available/
+sudo rm -rf /etc/nginx/sites-available/default
+sudo cp ~/default /etc/nginx/sites-available/
 
 sudo systemctl restart nginx
 
