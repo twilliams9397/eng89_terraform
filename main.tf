@@ -17,7 +17,7 @@ resource "aws_instance" "db_instance" {
 	associate_public_ip_address = false
 
   provisioner "file" {
-    source      = "/Users/Tom1/Documents/Sparta/Terraform/db_provision.sh/"
+    source      = "/Users/Tom1/Documents/Sparta/Terraform/db"
     destination = "/home/ubuntu"
 
     connection {
@@ -31,7 +31,7 @@ resource "aws_instance" "db_instance" {
   provisioner "remote-exec" {
     inline = [
               "sudo apt-get update -y",
-              "sh provision.sh"]
+              "sh db/provision.sh"]
 
     connection {
       type        = "ssh"
